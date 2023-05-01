@@ -1,0 +1,174 @@
+/** App's Variables **/
+
+:root {
+    --app-background: rgb(225, 231, 228);
+    --app-background-contrast: black;
+    --app-secondary-background: rgb(66, 73, 82);
+    --app-secondary-background-contrast: white;
+    --app-primary-color: rgb(225, 231, 228);
+    --app-primary-color-contrast: black;
+    --app-font-family: "Roboto";
+    --app-text-color-light: rgba(169, 169, 169);
+}
+
+/** CSS reset **/
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+}
+
+svg {
+    width: 100%;
+    height: 100%;
+}
+
+a {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    color: inherit;
+    border: solid 0.15rem transparent;
+}
+
+a:focus:not(:focus-visible) {
+    outline: none;
+}
+
+a:focus-visible {
+    outline: none;
+    border: solid 0.15rem var(--app-primary-color);
+}
+
+input {
+    font-size: 1rem;
+    /** set to prevent input zooming **/
+}
+
+textarea {
+    font-size: 1rem;
+    /** set to prevent input zooming **/
+}
+
+/** Button **/
+
+button {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    border: none;
+    font: inherit;
+    color: inherit;
+    background-color: transparent;
+    cursor: pointer;
+    box-sizing: border-box;
+    border-spacing: 0;
+    margin: 0;
+    padding: 0;
+    pointer-events: auto;
+
+    border: solid 0.15rem transparent;
+}
+
+button:focus:not(:focus-visible) {
+    outline: none;
+}
+
+button:focus-visible {
+    outline: none;
+    border: solid 0.15rem var(--app-primary-color);
+}
+
+/** App's Layout **/
+
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    -webkit-font-smoothing: antialiased;
+    display: block;
+    position: relative;
+    font-family: var(--app-font-family);
+    font-style: normal;
+    font-weight: 400;
+    background: var(--app-background);
+    color: var(--app-background-contrast);
+    overflow: hidden;
+}
+
+#root {
+    margin: 0;
+    padding: 0;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: block;
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+}
+
+/** Default scrollbar **/
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(144, 144, 144, 0.4) transparent;
+}
+
+::-webkit-scrollbar-button,
+::-webkit-scrollbar-track-piece,
+::-webkit-scrollbar-corner,
+::-webkit-resizer {
+    display: none;
+}
+
+::-webkit-scrollbar {
+    width: 0.4rem;
+    height: 0.4rem;
+    border: none;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 1rem;
+    border: none;
+}
+
+::-webkit-scrollbar-track:hover {
+    background: rgba(144, 144, 144, 0.2);
+    border-radius: 1rem;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(144, 144, 144, 0.4);
+    border-radius: 1rem;
+    border: none;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(111, 111, 111, 0.4);
+}
+
+/* ::-webkit-scrollbar-thumb:active {
+    background: var(--app-primary-color);
+} */

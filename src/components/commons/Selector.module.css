@@ -1,0 +1,13 @@
+.container {
+    display: block;
+    position: relative;
+}
+
+.highlight {
+    display: block;
+    position: relative;
+    width: 100%;
+
+    transform-origin: left center;
+    transition: transform 0.3s ease;
+}

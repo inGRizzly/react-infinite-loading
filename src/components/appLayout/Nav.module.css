@@ -1,0 +1,89 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 90%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+    height: auto;
+    margin-top: 0.4rem;
+}
+
+.search-bar_container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.search-bar {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 0.2rem;
+    padding: 0.4rem;
+    border: 0.16rem solid transparent;
+    transition: border 0.3s ease;
+}
+
+.search-bar_focused {
+    border: 0.16rem solid var(--app-primary-color);
+}
+
+.search-bar input::placeholder {
+    font-weight: bold;
+    font-size: 1rem;
+    color: var(--app-text-color-light);
+}
+
+.selectors-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    position: relative;
+    width: 100%;
+    height: auto;
+    margin-top: 1rem;
+}
+
+.selector {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+}
+
+.list-container {
+    flex: 1;
+    display: flex;
+    position: relative;
+    width: 100%;
+    overflow: auto;
+    margin-top: 0.4rem;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+}
+
+.list {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    height: auto;
+    min-height: 100%;
+}
+
+.container ::-webkit-scrollbar-thumb:active {
+    background: var(--app-primary-color);
+}

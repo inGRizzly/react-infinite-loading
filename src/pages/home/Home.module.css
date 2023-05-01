@@ -1,0 +1,35 @@
+.page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    height: auto;
+    min-height: 100%;
+    padding: 1rem;
+}
+
+.text-content {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    position: relative;
+    width: min(44rem, 100%);
+    padding: 1rem;
+    word-break: break-word;
+    font-size: 1rem;
+    color: var(--app-secondary-background);
+}
+
+.title {
+    margin: 0;
+    padding: 0;
+    font-size: min(6rem, 18vw);
+    font-weight: 600;
+}
+
+.description {
+    margin: 0;
+    padding: 0;
+}
