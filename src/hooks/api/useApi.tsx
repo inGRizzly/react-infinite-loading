@@ -1,5 +1,5 @@
 // Import(s) - Core
-import { useState, useMemo, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import axios from "axios";
 
 // Import(s) - Utils
@@ -79,9 +79,10 @@ export interface UseApiProps {
 /**
  * 
  * {@link UseApiProps}
+ * {@link UseApiContext}
  * 
  */
-export const useApi = (props: UseApiProps) => {
+export const useApi = (props: UseApiProps): UseApiContext => {
 
     // Props
 
@@ -346,18 +347,21 @@ export const useApi = (props: UseApiProps) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // Return
-    const context = useMemo<UseApiContext>(() => {
+    // Effect - To update baseURL
 
-        return {
-            // GET
-            getCharacters,
-            getCharactersByName,
-            getBooks,
-            getBooksByName,
-            getCharacterById,
-            getBookById
-        };
-    }, [getBookById, getBooks, getBooksByName, getCharacterById, getCharacters, getCharactersByName]);
-    return context;
+    useEffect(() => {
+        axiosInstance.defaults.baseURL = baseURL;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [baseURL]);
+
+    // Return
+    return {
+        // GET Method(s)
+        getCharacters,
+        getCharactersByName,
+        getBooks,
+        getBooksByName,
+        getCharacterById,
+        getBookById
+    };
 };
