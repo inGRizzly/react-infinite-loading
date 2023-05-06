@@ -19,10 +19,12 @@ export const getFlatDataFromInfiniteQuery: (
         } = options || {};
 
         const flatData: Partial<GetListResponseData>[] = originalData.pages.map((currentDataPage) => {
+            
             return currentDataPage.data;
         }).flat();
 
         if (!checkDuplicateKey) {
+            
             return flatData;
         }
 
@@ -35,16 +37,20 @@ export const getFlatDataFromInfiniteQuery: (
                 const isAlreadyPushed = currentAcc.find((current: any) => current[checkDuplicateKey] === currentData[checkDuplicateKey]);
 
                 if (isAlreadyPushed) {
+                    
                     return currentAcc;
                 } else {
+                    
                     currentAcc.push(currentData);
                 }
             } else {
+                
                 currentAcc.push(currentData);
             }
 
             return currentAcc;
         }, []);
+        
         return dataChecked;
     }
 

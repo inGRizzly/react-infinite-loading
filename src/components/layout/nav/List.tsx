@@ -41,7 +41,7 @@ export interface ListProps {
  */
 export const List = (props: ListProps) => {
 
-    // Props
+    // Prop(s)
 
     const {
         type,
@@ -80,7 +80,6 @@ export const List = (props: ListProps) => {
 
     const {
         data,
-        // error, // TODO: toast
         fetchNextPage,
         isLoading
     } = useInfiniteQuery(
@@ -99,7 +98,6 @@ export const List = (props: ListProps) => {
                 const {
                     paginationInfo: lastPagePaginationInfo = {}
                 } = lastPage;
-
                 const {
                     next = undefined
                 } = lastPagePaginationInfo;
@@ -130,7 +128,6 @@ export const List = (props: ListProps) => {
         (queryFunctionContext) => {
 
             const queryKeys: any[] = [...queryFunctionContext.queryKey];
-
             const currentFilter: string | undefined = queryKeys[1] || undefined;
 
             if (!currentFilter) {
@@ -139,8 +136,10 @@ export const List = (props: ListProps) => {
             } else {
 
                 if (type === "characters") {
+                    
                     return getCharactersByName({ name: currentFilter, signal: queryFunctionContext.signal || undefined });
                 } else {
+                    
                     return getBooksByName({ name: currentFilter, signal: queryFunctionContext.signal || undefined });
                 }
             }
@@ -161,6 +160,7 @@ export const List = (props: ListProps) => {
         if (!isLoading) {
 
             if (onLoaded && typeof onLoaded === "function") {
+                
                 onLoaded();
             }
         }
@@ -185,7 +185,6 @@ export const List = (props: ListProps) => {
 
         const flatData = getFlatDataFromInfiniteQuery(data, { checkDuplicateKey: "id" }) || [];
 
-        // return sortArrayByObjectKey(flatData, "name") || []; // TODO: sorting = visual glitch on page fetching (Need to be fixed before to use)
         return flatData;
     }, [filteredData, filter, data]);
 
@@ -220,9 +219,10 @@ export const List = (props: ListProps) => {
     return (
         <VirtualizedList
             data={DataToUse}
-            // totalCount={DataToUse.length} // TODO: this causes multiple fetches of the same page?
             endReached={() => {
+                
                 if (!internalStatesRef.current.filter && internalStatesRef.current.hasNextPage) {
+                    
                     fetchNextPage();
                 }
             }}
@@ -233,6 +233,7 @@ export const List = (props: ListProps) => {
                 let scrollY = 0;
 
                 if (container) {
+                    
                     scrollY = container.scrollTop || 0;
                 }
 
@@ -241,8 +242,8 @@ export const List = (props: ListProps) => {
                     onScroll(scrollY);
                 }
             } : undefined}
-            increaseViewportBy={window.innerHeight} // TODO
-            overscan={window.innerHeight} // TODO: from parent height
+            increaseViewportBy={window.innerHeight}
+            overscan={window.innerHeight}
             itemContent={(_, item) => {
 
                 const {
@@ -268,6 +269,7 @@ export const List = (props: ListProps) => {
                                 style={({ isActive }) => {
 
                                     if (isActive) {
+                                        
                                         return {
                                             backgroundColor: "var(--app-primary-color)",
                                             color: "var(--app-primary-color-contrast)"

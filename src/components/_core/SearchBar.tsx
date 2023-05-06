@@ -58,7 +58,7 @@ export interface SearchBarProps extends
  */
 export const SearchBar = (props: SearchBarProps) => {
 
-    // Props
+    // Prop(s)
 
     const {
         "aria-label": ariaLabel = "",
@@ -133,14 +133,18 @@ export const SearchBar = (props: SearchBarProps) => {
                 style={inputStyle}
                 type="text"
                 onFocus={() => {
+                    
                     setIsFocused(true);
                 }}
                 onBlur={() => {
+                    
                     setIsFocused(false);
                 }}
                 value={value}
                 onChange={(event) => {
+                    
                     if (onChange && typeof onChange === "function") {
+                        
                         onChange(event.target.value);
                     }
                 }}

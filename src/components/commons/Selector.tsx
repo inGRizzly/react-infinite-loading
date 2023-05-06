@@ -33,7 +33,7 @@ export interface SelectorProps extends
  */
 export const Selector = (props: SelectorProps) => {
 
-    // Props
+    // Prop(s)
 
     const {
         children = null,

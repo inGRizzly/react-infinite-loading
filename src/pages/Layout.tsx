@@ -27,7 +27,9 @@ const Layout = () => {
     // State(s)
 
     const [displayOrientation, setDisplayOrientation] = useState<DisplayOrientation>(() => {
+        
         if (window.innerHeight >= window.innerWidth) {
+            
             return "portrait";
         }
         return "landscape";
@@ -41,8 +43,10 @@ const Layout = () => {
         const handleWindowResize = () => {
 
             if (window.innerHeight >= window.innerWidth) {
+                
                 setDisplayOrientation("portrait");
             } else {
+                
                 setDisplayOrientation("landscape");
             }
         };
@@ -51,6 +55,7 @@ const Layout = () => {
 
         // Clean up
         return () => {
+            
             window.removeEventListener("resize", handleWindowResize);
         };
     }, []);
@@ -83,6 +88,7 @@ const Layout = () => {
                                 type="button"
                                 aria-label="menu button"
                                 onClick={() => {
+                                    
                                     setShowNav((current) => !current);
                                 }}
                             >

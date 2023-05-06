@@ -84,7 +84,7 @@ export interface UseApiProps {
  */
 export const useApi = (props: UseApiProps): UseApiContext => {
 
-    // Props
+    // Prop(s)
 
     const {
         baseURL = ""
@@ -93,6 +93,7 @@ export const useApi = (props: UseApiProps): UseApiContext => {
     // State(s)
 
     const [axiosInstance] = useState<AxiosInstance>(() => {
+
         return axios.create({
             baseURL,
             headers: {
@@ -199,6 +200,7 @@ export const useApi = (props: UseApiProps): UseApiContext => {
                 data: data || []
             };
         } catch (error) {
+
             throw error;
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -277,6 +279,7 @@ export const useApi = (props: UseApiProps): UseApiContext => {
 
             return data || [];
         } catch (error) {
+
             throw error;
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -310,6 +313,7 @@ export const useApi = (props: UseApiProps): UseApiContext => {
 
             return data || {};
         } catch (error) {
+
             throw error;
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -318,31 +322,37 @@ export const useApi = (props: UseApiProps): UseApiContext => {
     // Get method(s)
 
     const getCharacters = useCallback<(params: GetListParams) => Promise<GetListResponse>>(async (params) => {
+
         return getList(params, "characters");
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const getCharactersByName = useCallback<(params: GetListByNameParams) => Promise<GetListByNameResponse>>(async (params) => {
+
         return getListByName(params, "characters");
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const getBooks = useCallback<(params: GetListParams) => Promise<GetListResponse>>(async (params) => {
+
         return getList(params, "books");
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const getBooksByName = useCallback<(params: GetListByNameParams) => Promise<GetListByNameResponse>>(async (params) => {
+
         return getListByName(params, "books");
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const getCharacterById = useCallback<(params: GetByIdParams) => Promise<GetCharacterByIdResponseData>>(async (params) => {
+
         return getById(params, "characters");
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const getBookById = useCallback<(params: GetByIdParams) => Promise<GetBookByIdResponseData>>(async (params) => {
+
         return getById(params, "books");
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -350,9 +360,11 @@ export const useApi = (props: UseApiProps): UseApiContext => {
     // Effect - To update baseURL
 
     useEffect(() => {
-        axiosInstance.defaults.baseURL = baseURL;
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [baseURL]);
+
+        if (baseURL && axiosInstance) {
+            axiosInstance.defaults.baseURL = baseURL;
+        }
+    }, [axiosInstance, baseURL]);
 
     // Return
     return {

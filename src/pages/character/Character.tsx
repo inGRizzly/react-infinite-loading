@@ -55,6 +55,7 @@ const Character = () => {
             const currentId: string | undefined = queryKeys[1] || undefined;
 
             if (currentId) {
+                
                 return getCharacterById({ id: currentId, signal: queryFunctionContext.signal || undefined });
             }
 
@@ -76,9 +77,11 @@ const Character = () => {
         let characterData = undefined;
         const charactersData: any = queryClient.getQueryData(["characters"]);
         if (charactersData) {
+            
             const flatData = getFlatDataFromInfiniteQuery(charactersData);
             const flatDataFiltered = flatData.filter((current) => current.id === id);
             if (flatDataFiltered.length) {
+                
                 characterData = flatDataFiltered[0];
             }
         }

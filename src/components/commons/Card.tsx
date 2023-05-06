@@ -15,7 +15,7 @@ export interface CardProps {
  */
 export const Card = (props: CardProps) => {
 
-    // Props
+    // Prop(s)
 
     const {
         name = "unknow"

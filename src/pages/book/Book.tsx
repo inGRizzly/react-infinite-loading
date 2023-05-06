@@ -55,6 +55,7 @@ const Book = () => {
             const currentId: string | undefined = queryKeys[1] || undefined;
 
             if (currentId) {
+                
                 return getBookById({ id: currentId, signal: queryFunctionContext.signal || undefined });
             }
 
@@ -76,9 +77,11 @@ const Book = () => {
         let bookData = undefined;
         const booksData: any = queryClient.getQueryData(["books"]);
         if (booksData) {
+            
             const flatData = getFlatDataFromInfiniteQuery(booksData);
             const flatDataFiltered = flatData.filter((current) => current.id === id);
             if (flatDataFiltered.length) {
+                
                 bookData = flatDataFiltered[0];
             }
         }

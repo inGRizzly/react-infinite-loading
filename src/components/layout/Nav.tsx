@@ -39,8 +39,10 @@ export const Nav = () => {
     useEffect(() => {
 
         if (activeSelector === "books") {
+            
             setCharactersListScrollTop(internalStatesRef.current.charactersListScrollTop);
         } else if (activeSelector === "characters") {
+            
             setBooksListScrollTop(internalStatesRef.current.booksListScrollTop);
         }
     }, [activeSelector]);
@@ -98,6 +100,7 @@ export const Nav = () => {
                     highlightColor="var(--app-secondary-background-contrast)"
                     isActive={activeSelector === "characters"}
                     onClick={() => {
+                        
                         setActiveSelector("characters");
                     }}
                     aria-label="selector"
@@ -110,6 +113,7 @@ export const Nav = () => {
                     highlightColor="var(--app-secondary-background-contrast)"
                     isActive={activeSelector === "books"}
                     onClick={() => {
+                        
                         setActiveSelector("books");
                     }}
                     aria-label="selector"
@@ -133,6 +137,7 @@ export const Nav = () => {
                             key="Nav-List-characters"
                             type="characters"
                             onScroll={(scrollValue) => {
+                                
                                 internalStatesRef.current.charactersListScrollTop = scrollValue;
                             }}
                             initialScrollTop={charactersListScrollTop}
@@ -147,6 +152,7 @@ export const Nav = () => {
                             key="Nav-List-books"
                             type="books"
                             onScroll={(scrollValue) => {
+                                
                                 internalStatesRef.current.booksListScrollTop = scrollValue;
                             }}
                             initialScrollTop={booksListScrollTop}

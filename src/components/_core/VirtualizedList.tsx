@@ -19,7 +19,7 @@ export interface VirtualizedListProps extends Omit<VirtuosoProps<ItemData, Conte
 // Export - Component
 export const VirtualizedList = (props: VirtualizedListProps) => {
 
-    // Props
+    // Prop(s)
 
     const {
         style = {},
@@ -34,8 +34,11 @@ export const VirtualizedList = (props: VirtualizedListProps) => {
     // Effect - to exec on init
 
     useEffect(() => {
+        
         if (virtuosoRef && virtuosoRef.current) {
+            
             if (onInit && typeof onInit === "function") {
+                
                 onInit(virtuosoRef.current);
             }
         }
