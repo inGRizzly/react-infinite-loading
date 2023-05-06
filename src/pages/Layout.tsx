@@ -4,13 +4,13 @@ import { createContext, useContext, useEffect, useState } from "react";
 // Import(s) - Component
 import { Outlet } from "react-router";
 import { Link } from "react-router-dom";
-import { Nav } from "components/appLayout/Nav";
+import { Nav } from "components/layout/Nav";
 
 // Import(s) - SVG
 import { AppLogo } from "svg/AppLogo";
 
 // Import(s) - CSS
-import styles from "pages/AppLayout.module.css";
+import styles from "pages/Layout.module.css";
 
 // Interfaces / Types
 type DisplayOrientation = "portrait" | "landscape";
@@ -22,7 +22,7 @@ interface ContextProps {
 const Context = createContext<ContextProps>({} as ContextProps);
 
 // Export - Page
-const AppLayout = () => {
+const Layout = () => {
 
     // State(s)
 
@@ -118,7 +118,7 @@ const AppLayout = () => {
         </Context.Provider>
     );
 };
-export default AppLayout;
+export default Layout;
 
 // Export - Hook
 export const useAppLayout = () => {

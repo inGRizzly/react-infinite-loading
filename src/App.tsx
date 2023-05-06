@@ -6,13 +6,13 @@ import { Routes, Route, Navigate } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // Import(s) - App's Layout
-import AppLayout from "pages/AppLayout";
+import Layout from "pages/Layout";
 
 // Import(s) - (lazy loaded) Pages
 import BasicLoader from "pages/_loaders/BasicLoader";
-const Home = lazy(() => import('pages/home/Home'));
-const Character = lazy(() => import('pages/character/Character'));
-const Book = lazy(() => import('pages/book/Book'));
+const Home = lazy(() => import("pages/home/Home"));
+const Character = lazy(() => import("pages/character/Character"));
+const Book = lazy(() => import("pages/book/Book"));
 
 // Export - App
 const App = () => {
@@ -39,10 +39,10 @@ const App = () => {
 
             <Routes>
 
-                {/* AppLayout */}
+                {/* Layout */}
                 <Route
                     path="/"
-                    element={(<AppLayout />)}
+                    element={(<Layout />)}
                 >
 
                     {/* Home */}

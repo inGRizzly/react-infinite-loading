@@ -16,7 +16,7 @@ import { getFlatDataFromInfiniteQuery } from "utils/nav/getFlatDataFromInfiniteQ
 import type { GetListResponse, GetListResponseData } from "hooks/api/useApi";
 
 // Import(s) - CSS
-import styles from "components/appLayout/nav/List.module.css";
+import styles from "components/layout/nav/List.module.css";
 
 // Interfaces / Types
 export interface ListProps {

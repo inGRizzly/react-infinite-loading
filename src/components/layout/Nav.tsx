@@ -4,13 +4,13 @@ import { useEffect, useState, useRef } from "react";
 // Import(s) - Component
 import { SearchBar } from "components/_core/SearchBar";
 import { Selector } from "components/commons/Selector";
-import { List } from "components/appLayout/nav/List";
+import { List } from "components/layout/nav/List";
 
 // Import(s) - SVG
 import { SearchIcon } from "svg/Icon";
 
 // Import(s) - CSS
-import styles from "components/appLayout/Nav.module.css";
+import styles from "components/layout/Nav.module.css";
 
 // Export - Component
 export const Nav = () => {
