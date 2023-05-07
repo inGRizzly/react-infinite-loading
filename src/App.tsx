@@ -16,10 +16,8 @@ const Book = lazy(() => import("pages/book/Book"));
 
 // Export - App
 const App = () => {
-
     // State(s)
     const [queryClient] = useState<QueryClient>(() => {
-
         return new QueryClient({
             defaultOptions: {
                 queries: {
@@ -34,45 +32,38 @@ const App = () => {
 
     // Render
     return (
-
         <QueryClientProvider client={queryClient}>
-
             <Routes>
-
                 {/* Layout */}
-                <Route
-                    path="/"
-                    element={(<Layout />)}
-                >
-
+                <Route path="/" element={<Layout />}>
                     {/* Home */}
                     <Route
                         index
-                        element={(
-                            <Suspense fallback={(<BasicLoader />)}>
+                        element={
+                            <Suspense fallback={<BasicLoader />}>
                                 <Home />
                             </Suspense>
-                        )}
+                        }
                     />
 
                     {/* Character */}
                     <Route
                         path="character/:id"
-                        element={(
-                            <Suspense fallback={(<BasicLoader />)}>
+                        element={
+                            <Suspense fallback={<BasicLoader />}>
                                 <Character />
                             </Suspense>
-                        )}
+                        }
                     />
 
                     {/* Book */}
                     <Route
                         path="book/:id"
-                        element={(
-                            <Suspense fallback={(<BasicLoader />)}>
+                        element={
+                            <Suspense fallback={<BasicLoader />}>
                                 <Book />
                             </Suspense>
-                        )}
+                        }
                     />
                 </Route>
 
@@ -81,5 +72,5 @@ const App = () => {
             </Routes>
         </QueryClientProvider>
     );
-}
+};
 export default App;

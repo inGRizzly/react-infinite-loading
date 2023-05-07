@@ -1,15 +1,15 @@
 // Import(s) - Core
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
 // Import(s) - Hooks
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 
 // Import(s) - Hook
 import { useApi } from "hooks/api/useApi";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 // Import(s) - Component
-import { Card } from 'components/commons/Card';
+import { Card } from "components/commons/Card";
 
 // Import(s) - Utils
 import { getFlatDataFromInfiniteQuery } from "utils/nav/getFlatDataFromInfiniteQuery";
@@ -23,18 +23,15 @@ import styles from "pages/book/Book.module.css";
 // Interfaces / Types
 type PageParams = {
     id: string;
-}
+};
 
 // Export - Page
 const Book = () => {
-
     // Hook(s)
 
     const { id } = useParams<PageParams>();
 
-    const {
-        getBookById
-    } = useApi({
+    const { getBookById } = useApi({
         baseURL: "https://www.anapioficeandfire.com/api/"
     });
 
@@ -50,13 +47,14 @@ const Book = () => {
     } = useQuery<GetBookByIdResponseData, Error>(
         ["book", id],
         (queryFunctionContext) => {
-
             const queryKeys: any[] = [...queryFunctionContext.queryKey];
             const currentId: string | undefined = queryKeys[1] || undefined;
 
             if (currentId) {
-                
-                return getBookById({ id: currentId, signal: queryFunctionContext.signal || undefined });
+                return getBookById({
+                    id: currentId,
+                    signal: queryFunctionContext.signal || undefined
+                });
             }
 
             return {};
@@ -72,34 +70,30 @@ const Book = () => {
     // Effect - To listen id
 
     useEffect(() => {
-
         // Check if data is in cache
         let bookData = undefined;
         const booksData: any = queryClient.getQueryData(["books"]);
         if (booksData) {
-            
             const flatData = getFlatDataFromInfiniteQuery(booksData);
-            const flatDataFiltered = flatData.filter((current) => current.id === id);
+            const flatDataFiltered = flatData.filter(
+                (current) => current.id === id
+            );
             if (flatDataFiltered.length) {
-                
                 bookData = flatDataFiltered[0];
             }
         }
 
         // Set data
         if (bookData) {
-
             // From cache
             queryClient.setQueryData(["book", id], bookData);
         } else {
-
             // From Api
             refetch();
         }
 
         // Clean up
         return () => {
-
             // Cancel queries
             queryClient.cancelQueries({ queryKey: ["book", id], exact: true });
         };
@@ -110,9 +104,7 @@ const Book = () => {
 
     return (
         <div className={styles["page"]}>
-            <Card
-                name={data.name}
-            />
+            <Card name={data.name} />
         </div>
     );
 };

@@ -10,10 +10,8 @@ import type {
 import styles from "components/commons/Selector.module.css";
 
 // Interfaces / Types
-export interface SelectorProps extends
-    Omit<ButtonHTMLAttributes<HTMLButtonElement>,
-        "children"
-    > {
+export interface SelectorProps
+    extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children"> {
     children: ReactElement | ReactNode | null | undefined;
     containerClassName?: string;
     containerStyle?: CSSProperties;
@@ -27,12 +25,11 @@ export interface SelectorProps extends
 // Export - Component
 
 /**
- * 
+ *
  * {@link SelectorProps}
- * 
+ *
  */
 export const Selector = (props: SelectorProps) => {
-
     // Prop(s)
 
     const {
@@ -58,11 +55,7 @@ export const Selector = (props: SelectorProps) => {
             }
             style={containerStyle}
         >
-
-            <button
-                {...rest}
-                type="button"
-            >
+            <button {...rest} type="button">
                 {children}
             </button>
 

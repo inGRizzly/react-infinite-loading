@@ -13,14 +13,14 @@ export interface GetCharacterByIdResponseData {
     name?: string;
     aliases?: string[];
     tvSeries?: string[];
-};
+}
 
 // Interfaces / Types - Book
 export interface GetBookByIdResponseData {
     name?: string;
     isbn?: string;
     authors?: string[];
-};
+}
 
 // Interfaces / Types - Commons
 interface ApiLinkHeaderObject {
@@ -42,13 +42,19 @@ export interface GetListResponseData {
 export interface GetListResponse {
     pageIndex: number;
     paginationInfo: ApiLinkHeader;
-    data: GetListResponseData[] | GetCharacterByIdResponseData[] | GetBookByIdResponseData[];
+    data:
+        | GetListResponseData[]
+        | GetCharacterByIdResponseData[]
+        | GetBookByIdResponseData[];
 }
 interface GetListParams {
     page: number;
     signal?: AbortSignal;
 }
-export type GetListByNameResponse = GetListResponseData[] | GetCharacterByIdResponseData[] | GetBookByIdResponseData[];
+export type GetListByNameResponse =
+    | GetListResponseData[]
+    | GetCharacterByIdResponseData[]
+    | GetBookByIdResponseData[];
 export interface GetListByNameParams {
     name: string;
     signal?: AbortSignal;
@@ -62,10 +68,16 @@ export interface GetByIdParams {
 export interface UseApiContext {
     // GET
     getCharacters: (params: GetListParams) => Promise<GetListResponse>;
-    getCharactersByName: (params: GetListByNameParams) => Promise<GetListByNameResponse>;
+    getCharactersByName: (
+        params: GetListByNameParams
+    ) => Promise<GetListByNameResponse>;
     getBooks: (params: GetListParams) => Promise<GetListResponse>;
-    getBooksByName: (params: GetListByNameParams) => Promise<GetListByNameResponse>;
-    getCharacterById: (params: GetByIdParams) => Promise<GetCharacterByIdResponseData>;
+    getBooksByName: (
+        params: GetListByNameParams
+    ) => Promise<GetListByNameResponse>;
+    getCharacterById: (
+        params: GetByIdParams
+    ) => Promise<GetCharacterByIdResponseData>;
     getBookById: (params: GetByIdParams) => Promise<GetBookByIdResponseData>;
 }
 
@@ -77,41 +89,41 @@ export interface UseApiProps {
 // Export - Hook
 
 /**
- * 
+ *
  * {@link UseApiProps}
  * {@link UseApiContext}
- * 
+ *
  */
 export const useApi = (props: UseApiProps): UseApiContext => {
-
     // Prop(s)
 
-    const {
-        baseURL = ""
-    } = props;
+    const { baseURL = "" } = props;
 
     // State(s)
 
     const [axiosInstance] = useState<AxiosInstance>(() => {
-
         return axios.create({
             baseURL,
             headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json"
             }
         });
     });
 
     // Axios function(s)
 
-    const makeAxiosRequest = async (requestConfig: AxiosRequestConfig, rawResponse?: boolean) => {
+    const makeAxiosRequest = async (
+        requestConfig: AxiosRequestConfig,
+        rawResponse?: boolean
+    ) => {
         try {
-
             if (!axiosInstance) {
                 throw new Error("no axios instance found");
             }
 
-            const response: AxiosResponse = await axiosInstance.request(requestConfig);
+            const response: AxiosResponse = await axiosInstance.request(
+                requestConfig
+            );
             return rawResponse ? response : response.data;
         } catch (error: any) {
             throw error;
@@ -120,47 +132,44 @@ export const useApi = (props: UseApiProps): UseApiContext => {
 
     // Constant(s)
 
-    const getList = useCallback<(params: GetListParams, type: "characters" | "books") => Promise<GetListResponse>>(async (params, type) => {
+    const getList = useCallback<
+        (
+            params: GetListParams,
+            type: "characters" | "books"
+        ) => Promise<GetListResponse>
+    >(async (params, type) => {
         try {
-
             // Define variable(s)
-            const {
-                page,
-                signal
-            } = params;
+            const { page, signal } = params;
 
             // Build request parameters
             const url = type + "?page=" + page + "&pageSize=50";
             const method = "get";
 
             // Make request
-            const res = await makeAxiosRequest({
-                method,
-                url,
-                signal
-            }, true);
+            const res = await makeAxiosRequest(
+                {
+                    method,
+                    url,
+                    signal
+                },
+                true
+            );
 
             // Return result
             let data: GetListResponseData[] = [];
             let linkHeader: ApiLinkHeader | null | undefined = {};
             if (res) {
-
                 data = (res.data || []).reduce((acc: any, currentData: any) => {
-
                     const currentAcc = [...acc];
 
-                    const {
-                        name,
-                        url
-                    } = currentData;
+                    const { name, url } = currentData;
 
                     if (name && name.length > 0) {
-
                         const urlArray = url.split(type + "/");
                         const id = urlArray[1];
 
                         if (id) {
-
                             // // V1 - Without cache strategy
                             // currentAcc.push({
                             //     id,
@@ -169,7 +178,6 @@ export const useApi = (props: UseApiProps): UseApiContext => {
 
                             // V2 - With cache strategy
                             if (type === "characters") {
-
                                 currentAcc.push({
                                     id,
                                     name,
@@ -177,7 +185,6 @@ export const useApi = (props: UseApiProps): UseApiContext => {
                                     tvSeries: currentData.tvSeries
                                 });
                             } else if (type === "books") {
-
                                 currentAcc.push({
                                     id,
                                     name,
@@ -200,52 +207,48 @@ export const useApi = (props: UseApiProps): UseApiContext => {
                 data: data || []
             };
         } catch (error) {
-
             throw error;
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const getListByName = useCallback<(params: GetListByNameParams, type: "characters" | "books") => Promise<GetListByNameResponse>>(async (params, type) => {
+    const getListByName = useCallback<
+        (
+            params: GetListByNameParams,
+            type: "characters" | "books"
+        ) => Promise<GetListByNameResponse>
+    >(async (params, type) => {
         try {
-
             // Define variable(s)
-            const {
-                name,
-                signal
-            } = params;
+            const { name, signal } = params;
 
             // Build request parameters
             const url = type + "?name=" + name + "&pageSize=50";
             const method = "get";
 
             // Make request
-            const res = await makeAxiosRequest({
-                method,
-                url,
-                signal
-            }, true);
+            const res = await makeAxiosRequest(
+                {
+                    method,
+                    url,
+                    signal
+                },
+                true
+            );
 
             // Return result
             let data: GetListResponseData[] = [];
             if (res) {
-
                 data = (res.data || []).reduce((acc: any, currentData: any) => {
-
                     const currentAcc = [...acc];
 
-                    const {
-                        name,
-                        url
-                    } = currentData;
+                    const { name, url } = currentData;
 
                     if (name && name.length > 0) {
-
                         const urlArray = url.split(type + "/");
                         const id = urlArray[1];
 
                         if (id) {
-
                             // // V1 - Without cache strategy
                             // currentAcc.push({
                             //     id,
@@ -254,7 +257,6 @@ export const useApi = (props: UseApiProps): UseApiContext => {
 
                             // V2 - With cache strategy
                             if (type === "characters") {
-
                                 currentAcc.push({
                                     id,
                                     name,
@@ -262,7 +264,6 @@ export const useApi = (props: UseApiProps): UseApiContext => {
                                     tvSeries: currentData.tvSeries
                                 });
                             } else if (type === "books") {
-
                                 currentAcc.push({
                                     id,
                                     name,
@@ -279,41 +280,45 @@ export const useApi = (props: UseApiProps): UseApiContext => {
 
             return data || [];
         } catch (error) {
-
             throw error;
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const getById = useCallback<(params: GetByIdParams, type: "characters" | "books") => Promise<GetCharacterByIdResponseData | GetBookByIdResponseData>>(async (params, type) => {
+    const getById = useCallback<
+        (
+            params: GetByIdParams,
+            type: "characters" | "books"
+        ) => Promise<GetCharacterByIdResponseData | GetBookByIdResponseData>
+    >(async (params, type) => {
         try {
-
             // Define variable(s)
-            const {
-                id,
-                signal
-            } = params;
+            const { id, signal } = params;
 
             // Build request parameters
             const url = type + "/" + id;
             const method = "get";
 
             // Make request
-            const res = await makeAxiosRequest({
-                method,
-                url,
-                signal
-            }, true);
+            const res = await makeAxiosRequest(
+                {
+                    method,
+                    url,
+                    signal
+                },
+                true
+            );
 
             // Return result
-            let data: Partial<GetCharacterByIdResponseData | GetBookByIdResponseData> = {};
+            let data: Partial<
+                GetCharacterByIdResponseData | GetBookByIdResponseData
+            > = {};
             if (res) {
                 data = res.data;
             }
 
             return data || {};
         } catch (error) {
-
             throw error;
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -321,38 +326,44 @@ export const useApi = (props: UseApiProps): UseApiContext => {
 
     // Get method(s)
 
-    const getCharacters = useCallback<(params: GetListParams) => Promise<GetListResponse>>(async (params) => {
-
+    const getCharacters = useCallback<
+        (params: GetListParams) => Promise<GetListResponse>
+    >(async (params) => {
         return getList(params, "characters");
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const getCharactersByName = useCallback<(params: GetListByNameParams) => Promise<GetListByNameResponse>>(async (params) => {
-
+    const getCharactersByName = useCallback<
+        (params: GetListByNameParams) => Promise<GetListByNameResponse>
+    >(async (params) => {
         return getListByName(params, "characters");
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const getBooks = useCallback<(params: GetListParams) => Promise<GetListResponse>>(async (params) => {
-
+    const getBooks = useCallback<
+        (params: GetListParams) => Promise<GetListResponse>
+    >(async (params) => {
         return getList(params, "books");
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const getBooksByName = useCallback<(params: GetListByNameParams) => Promise<GetListByNameResponse>>(async (params) => {
-
+    const getBooksByName = useCallback<
+        (params: GetListByNameParams) => Promise<GetListByNameResponse>
+    >(async (params) => {
         return getListByName(params, "books");
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const getCharacterById = useCallback<(params: GetByIdParams) => Promise<GetCharacterByIdResponseData>>(async (params) => {
-
+    const getCharacterById = useCallback<
+        (params: GetByIdParams) => Promise<GetCharacterByIdResponseData>
+    >(async (params) => {
         return getById(params, "characters");
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const getBookById = useCallback<(params: GetByIdParams) => Promise<GetBookByIdResponseData>>(async (params) => {
-
+    const getBookById = useCallback<
+        (params: GetByIdParams) => Promise<GetBookByIdResponseData>
+    >(async (params) => {
         return getById(params, "books");
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -360,7 +371,6 @@ export const useApi = (props: UseApiProps): UseApiContext => {
     // Effect - To update baseURL
 
     useEffect(() => {
-
         if (baseURL && axiosInstance) {
             axiosInstance.defaults.baseURL = baseURL;
         }

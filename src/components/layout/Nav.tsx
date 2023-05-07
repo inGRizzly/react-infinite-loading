@@ -14,7 +14,6 @@ import styles from "components/layout/Nav.module.css";
 
 // Export - Component
 export const Nav = () => {
-
     // Ref(s)
 
     const internalStatesRef = useRef<{
@@ -27,22 +26,29 @@ export const Nav = () => {
 
     // State(s)
 
-    const [searchFilter, setSearchFilter] = useState<string | undefined>(undefined);
-    const [activeSelector, setActiveSelector] = useState<"characters" | "books">("characters");
-    const [charactersListScrollTop, setCharactersListScrollTop] = useState<number>(internalStatesRef.current.charactersListScrollTop);
-    const [charactersListIsLoading, setCharactersListIsLoading] = useState<boolean>(true);
-    const [booksListScrollTop, setBooksListScrollTop] = useState<number>(internalStatesRef.current.booksListScrollTop);
+    const [searchFilter, setSearchFilter] = useState<string | undefined>(
+        undefined
+    );
+    const [activeSelector, setActiveSelector] = useState<
+        "characters" | "books"
+    >("characters");
+    const [charactersListScrollTop, setCharactersListScrollTop] =
+        useState<number>(internalStatesRef.current.charactersListScrollTop);
+    const [charactersListIsLoading, setCharactersListIsLoading] =
+        useState<boolean>(true);
+    const [booksListScrollTop, setBooksListScrollTop] = useState<number>(
+        internalStatesRef.current.booksListScrollTop
+    );
     const [booksListIsLoading, setBooksListIsLoading] = useState<boolean>(true);
 
     // Effect - to listen the active selector AND set the index position on scroll of the previous list displayed
 
     useEffect(() => {
-
         if (activeSelector === "books") {
-            
-            setCharactersListScrollTop(internalStatesRef.current.charactersListScrollTop);
+            setCharactersListScrollTop(
+                internalStatesRef.current.charactersListScrollTop
+            );
         } else if (activeSelector === "characters") {
-            
             setBooksListScrollTop(internalStatesRef.current.booksListScrollTop);
         }
     }, [activeSelector]);
@@ -51,41 +57,39 @@ export const Nav = () => {
 
     return (
         <div className={styles["container"]}>
-
             {/* Top bar */}
             <div className={styles["top-bar"]}>
-
                 <div className={styles["search-bar_container"]}>
-
                     <SearchBar
                         className={styles["search-bar"]}
                         classNameFocused={styles["search-bar_focused"]}
-                        icon={(
+                        icon={
                             <div style={{ marginRight: "0.4rem" }}>
-                                <SearchIcon color="var(--app-text-color-light)" width="1.4rem" />
+                                <SearchIcon
+                                    color="var(--app-text-color-light)"
+                                    width="1.4rem"
+                                />
                             </div>
-                        )}
+                        }
                         inputClassName={styles["search-bar__input"]}
                         placeholder="Search"
                         disabled={
-                            (activeSelector === "characters" ?
-                                (charactersListIsLoading ? true : false) :
-                                (booksListIsLoading ? true : false)
-                            )
+                            activeSelector === "characters"
+                                ? charactersListIsLoading
+                                    ? true
+                                    : false
+                                : booksListIsLoading
+                                ? true
+                                : false
                         }
                         onChange={(value) => {
-
                             if (value) {
-
                                 if (value.length >= 3) {
-
                                     setSearchFilter(value);
                                 } else {
-
                                     setSearchFilter(undefined);
                                 }
                             } else {
-
                                 setSearchFilter(undefined);
                             }
                         }}
@@ -95,12 +99,10 @@ export const Nav = () => {
 
             {/* Selectors */}
             <div className={styles["selectors-container"]}>
-
                 <Selector
                     highlightColor="var(--app-secondary-background-contrast)"
                     isActive={activeSelector === "characters"}
                     onClick={() => {
-                        
                         setActiveSelector("characters");
                     }}
                     aria-label="selector"
@@ -113,7 +115,6 @@ export const Nav = () => {
                     highlightColor="var(--app-secondary-background-contrast)"
                     isActive={activeSelector === "books"}
                     onClick={() => {
-                        
                         setActiveSelector("books");
                     }}
                     aria-label="selector"
@@ -128,38 +129,36 @@ export const Nav = () => {
 
             {/* Lists Component */}
             <div className={styles["list-container"]}>
-
                 <div className={styles["list"]}>
-
                     {/* Characters list */}
-                    {activeSelector === "characters" &&
+                    {activeSelector === "characters" && (
                         <List
                             key="Nav-List-characters"
                             type="characters"
                             onScroll={(scrollValue) => {
-                                
-                                internalStatesRef.current.charactersListScrollTop = scrollValue;
+                                internalStatesRef.current.charactersListScrollTop =
+                                    scrollValue;
                             }}
                             initialScrollTop={charactersListScrollTop}
                             onLoaded={() => setCharactersListIsLoading(false)}
                             filter={searchFilter}
                         />
-                    }
+                    )}
 
                     {/* Books list */}
-                    {activeSelector === "books" &&
+                    {activeSelector === "books" && (
                         <List
                             key="Nav-List-books"
                             type="books"
                             onScroll={(scrollValue) => {
-                                
-                                internalStatesRef.current.booksListScrollTop = scrollValue;
+                                internalStatesRef.current.booksListScrollTop =
+                                    scrollValue;
                             }}
                             initialScrollTop={booksListScrollTop}
                             onLoaded={() => setBooksListIsLoading(false)}
                             filter={searchFilter}
                         />
-                    }
+                    )}
                 </div>
             </div>
         </div>

@@ -5,52 +5,49 @@ import type { GetListResponse, GetListResponseData } from "hooks/api/useApi";
 // Export(s)
 
 export const getFlatDataFromInfiniteQuery: (
-        originalData: InfiniteData<GetListResponse> | null | undefined,
-        options?: {
-            checkDuplicateKey?: string;
-        }
-    ) => Partial<GetListResponseData>[]
-    = (originalData, options) => {
-
+    originalData: InfiniteData<GetListResponse> | null | undefined,
+    options?: {
+        checkDuplicateKey?: string;
+    }
+) => Partial<GetListResponseData>[] = (originalData, options) => {
     if (originalData) {
+        const { checkDuplicateKey = undefined } = options || {};
 
-        const {
-            checkDuplicateKey = undefined
-        } = options || {};
-
-        const flatData: Partial<GetListResponseData>[] = originalData.pages.map((currentDataPage) => {
-            
-            return currentDataPage.data;
-        }).flat();
+        const flatData: Partial<GetListResponseData>[] = originalData.pages
+            .map((currentDataPage) => {
+                return currentDataPage.data;
+            })
+            .flat();
 
         if (!checkDuplicateKey) {
-            
             return flatData;
         }
 
-        const dataChecked = (flatData || []).reduce((acc: Partial<GetListResponseData>[], currentData: any) => {
+        const dataChecked = (flatData || []).reduce(
+            (acc: Partial<GetListResponseData>[], currentData: any) => {
+                const currentAcc = [...acc];
 
-            const currentAcc = [...acc];
+                if (currentAcc.length > 0) {
+                    const isAlreadyPushed = currentAcc.find(
+                        (current: any) =>
+                            current[checkDuplicateKey] ===
+                            currentData[checkDuplicateKey]
+                    );
 
-            if (currentAcc.length > 0) {
-
-                const isAlreadyPushed = currentAcc.find((current: any) => current[checkDuplicateKey] === currentData[checkDuplicateKey]);
-
-                if (isAlreadyPushed) {
-                    
-                    return currentAcc;
+                    if (isAlreadyPushed) {
+                        return currentAcc;
+                    } else {
+                        currentAcc.push(currentData);
+                    }
                 } else {
-                    
                     currentAcc.push(currentData);
                 }
-            } else {
-                
-                currentAcc.push(currentData);
-            }
 
-            return currentAcc;
-        }, []);
-        
+                return currentAcc;
+            },
+            []
+        );
+
         return dataChecked;
     }
 

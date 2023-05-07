@@ -1,21 +1,17 @@
 // Import(s) - Core
-import { createRoot } from 'react-dom/client';
-import {
-    BrowserRouter
-} from "react-router-dom";
-import reportWebVitals from './reportWebVitals';
+import { createRoot } from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+import reportWebVitals from "./reportWebVitals";
 
 // Import(s) - Component
-import App from 'App';
+import App from "App";
 
 // Import(s) - CSS
 import "index.css";
 import "css/_font__core.css";
 
 // Init App
-const root = createRoot(
-    document.getElementById('root') as HTMLElement
-);
+const root = createRoot(document.getElementById("root") as HTMLElement);
 root.render(
     <BrowserRouter>
         {/* <React.StrictMode>

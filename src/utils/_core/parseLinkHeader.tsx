@@ -4,7 +4,7 @@ const PARSE_LINK_HEADER_THROW_ON_MAXLEN_EXCEEDED = false;
 interface Link {
     rel: string;
     url: string;
-    [key: string]: string
+    [key: string]: string;
 }
 
 function hasRel(x: Link | undefined): x is Link {
@@ -27,21 +27,23 @@ export function parseSingleLink(linkHeader: string): Link | undefined {
     if (!matches) return undefined;
 
     const url = new URL(matches[1]);
-    const params = matches[2]?.split(';')
-        .map(param => param.trim().split('='))
-        .reduce((acc: Record<string, string>, [key, value]) => {
-            if (value && value.startsWith('"') && value.endsWith('"')) {
-                value = value.slice(1, -1);
-            }
-            acc[key] = value;
-            return acc;
-        }, {}) ?? {};
+    const params =
+        matches[2]
+            ?.split(";")
+            .map((param) => param.trim().split("="))
+            .reduce((acc: Record<string, string>, [key, value]) => {
+                if (value && value.startsWith('"') && value.endsWith('"')) {
+                    value = value.slice(1, -1);
+                }
+                acc[key] = value;
+                return acc;
+            }, {}) ?? {};
 
     return {
         rel: "",
         ...Object.fromEntries(url.searchParams),
         ...params,
-        url: url.href,
+        url: url.href
     };
 }
 
@@ -50,7 +52,11 @@ function checkHeader(linkHeader: string | null): boolean {
 
     if (linkHeader.length > PARSE_LINK_HEADER_MAXLEN) {
         if (PARSE_LINK_HEADER_THROW_ON_MAXLEN_EXCEEDED) {
-            throw new Error('Input string too long, it should be under ' + PARSE_LINK_HEADER_MAXLEN + ' characters.');
+            throw new Error(
+                "Input string too long, it should be under " +
+                    PARSE_LINK_HEADER_MAXLEN +
+                    " characters."
+            );
         } else {
             return false;
         }
@@ -60,15 +66,18 @@ function checkHeader(linkHeader: string | null): boolean {
 
 /**
  * {@link https://github.com/gustawdaniel}
- * @param linkHeader 
- * @returns 
+ * @param linkHeader
+ * @returns
  */
-export function parseLinkHeader(linkHeader: string | null): Record<string, Link> | null {
+export function parseLinkHeader(
+    linkHeader: string | null
+): Record<string, Link> | null {
     if (!linkHeader || !checkHeader(linkHeader)) return null;
 
-    return linkHeader.split(/,\s*/)
-        .map(e => {
-            return e
+    return linkHeader
+        .split(/,\s*/)
+        .map((e) => {
+            return e;
         })
 
         .map(parseSingleLink)

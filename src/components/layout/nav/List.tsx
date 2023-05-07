@@ -30,17 +30,16 @@ export interface ListProps {
 // Export - Component
 
 /**
- * 
+ *
  * {@link ListProps}
  * @todo
  * ```
  *  - Add 'prev' support to optimize data size
- * 
+ *
  * ```
- * 
+ *
  */
 export const List = (props: ListProps) => {
-
     // Prop(s)
 
     const {
@@ -67,43 +66,28 @@ export const List = (props: ListProps) => {
 
     // Hook(s)
 
-    const {
-        getCharacters,
-        getCharactersByName,
-        getBooks,
-        getBooksByName
-    } = useApi({
-        baseURL: "https://www.anapioficeandfire.com/api/"
-    });
+    const { getCharacters, getCharactersByName, getBooks, getBooksByName } =
+        useApi({
+            baseURL: "https://www.anapioficeandfire.com/api/"
+        });
 
     // API call(s)
 
-    const {
-        data,
-        fetchNextPage,
-        isLoading
-    } = useInfiniteQuery(
+    const { data, fetchNextPage, isLoading } = useInfiniteQuery(
         // Query key(s)
         [type],
         // Query function
         ({ pageParam = 1, signal }) =>
-        (type === "characters" ?
-            getCharacters({ page: pageParam, signal }) :
-            getBooks({ page: pageParam, signal })
-        )
-        ,
+            type === "characters"
+                ? getCharacters({ page: pageParam, signal })
+                : getBooks({ page: pageParam, signal }),
         {
             getNextPageParam: (lastPage: GetListResponse) => {
-
-                const {
-                    paginationInfo: lastPagePaginationInfo = {}
-                } = lastPage;
-                const {
-                    next = undefined
-                } = lastPagePaginationInfo;
+                const { paginationInfo: lastPagePaginationInfo = {} } =
+                    lastPage;
+                const { next = undefined } = lastPagePaginationInfo;
 
                 if (next && next.page) {
-
                     // Update internal hasNextPage state
                     internalStatesRef.current.hasNextPage = true;
 
@@ -120,47 +104,44 @@ export const List = (props: ListProps) => {
         }
     );
 
-    const {
-        data: filteredData = [],
-        isFetching: filteredDataIsFetching
-    } = useQuery<never[] | Partial<GetListResponseData>[], Error>(
-        ["filtered-" + type, filter],
-        (queryFunctionContext) => {
+    const { data: filteredData = [], isFetching: filteredDataIsFetching } =
+        useQuery<never[] | Partial<GetListResponseData>[], Error>(
+            ["filtered-" + type, filter],
+            (queryFunctionContext) => {
+                const queryKeys: any[] = [...queryFunctionContext.queryKey];
+                const currentFilter: string | undefined =
+                    queryKeys[1] || undefined;
 
-            const queryKeys: any[] = [...queryFunctionContext.queryKey];
-            const currentFilter: string | undefined = queryKeys[1] || undefined;
-
-            if (!currentFilter) {
-
-                return [];
-            } else {
-
-                if (type === "characters") {
-                    
-                    return getCharactersByName({ name: currentFilter, signal: queryFunctionContext.signal || undefined });
+                if (!currentFilter) {
+                    return [];
                 } else {
-                    
-                    return getBooksByName({ name: currentFilter, signal: queryFunctionContext.signal || undefined });
+                    if (type === "characters") {
+                        return getCharactersByName({
+                            name: currentFilter,
+                            signal: queryFunctionContext.signal || undefined
+                        });
+                    } else {
+                        return getBooksByName({
+                            name: currentFilter,
+                            signal: queryFunctionContext.signal || undefined
+                        });
+                    }
                 }
+            },
+            {
+                onError: () => setFilteredDataError(true),
+                onSuccess: () => setFilteredDataError(false),
+                retry: 0,
+                cacheTime: 1000 * 60 * 5, // 5 minutes
+                staleTime: 0
             }
-        },
-        {
-            onError: () => setFilteredDataError(true),
-            onSuccess: () => setFilteredDataError(false),
-            retry: 0,
-            cacheTime: 1000 * 60 * 5, // 5 minutes
-            staleTime: 0
-        }
-    );
+        );
 
     // Effect - To exec onLoaded
 
     useEffect(() => {
-
         if (!isLoading) {
-
             if (onLoaded && typeof onLoaded === "function") {
-                
                 onLoaded();
             }
         }
@@ -169,7 +150,6 @@ export const List = (props: ListProps) => {
     // Effect - To listen filter
 
     useEffect(() => {
-
         // Update internal filter state
         internalStatesRef.current.filter = filter;
     }, [filter]);
@@ -177,42 +157,26 @@ export const List = (props: ListProps) => {
     // Render(s)
 
     const DataToUse = useMemo(() => {
-
         if (filter && filteredData) {
-
             return filteredData;
         }
 
-        const flatData = getFlatDataFromInfiniteQuery(data, { checkDuplicateKey: "id" }) || [];
+        const flatData =
+            getFlatDataFromInfiniteQuery(data, { checkDuplicateKey: "id" }) ||
+            [];
 
         return flatData;
     }, [filteredData, filter, data]);
 
     if (isLoading) {
-
-        return (
-            <div>
-                loading...
-            </div>
-        );
+        return <div>loading...</div>;
     }
 
     if (filter) {
-
         if (filteredDataIsFetching) {
-
-            return (
-                <div>
-                    searching...
-                </div>
-            );
+            return <div>searching...</div>;
         } else if (filteredDataError || filteredData.length === 0) {
-
-            return (
-                <div>
-                    no match found
-                </div>
-            );
+            return <div>no match found</div>;
         }
     }
 
@@ -220,36 +184,37 @@ export const List = (props: ListProps) => {
         <VirtualizedList
             data={DataToUse}
             endReached={() => {
-                
-                if (!internalStatesRef.current.filter && internalStatesRef.current.hasNextPage) {
-                    
+                if (
+                    !internalStatesRef.current.filter &&
+                    internalStatesRef.current.hasNextPage
+                ) {
                     fetchNextPage();
                 }
             }}
             initialScrollTop={initialScrollTop}
-            onScroll={onScroll ? (e) => {
+            onScroll={
+                onScroll
+                    ? (e) => {
+                          const container = e?.target as
+                              | HTMLElement
+                              | null
+                              | undefined;
+                          let scrollY = 0;
 
-                const container = e?.target as HTMLElement | null | undefined;
-                let scrollY = 0;
+                          if (container) {
+                              scrollY = container.scrollTop || 0;
+                          }
 
-                if (container) {
-                    
-                    scrollY = container.scrollTop || 0;
-                }
-
-                if (onScroll && typeof onScroll === "function") {
-
-                    onScroll(scrollY);
-                }
-            } : undefined}
+                          if (onScroll && typeof onScroll === "function") {
+                              onScroll(scrollY);
+                          }
+                      }
+                    : undefined
+            }
             increaseViewportBy={window.innerHeight}
             overscan={window.innerHeight}
             itemContent={(_, item) => {
-
-                const {
-                    id = undefined,
-                    name = undefined
-                } = item;
+                const { id = undefined, name = undefined } = item;
 
                 return (
                     <div
@@ -257,21 +222,23 @@ export const List = (props: ListProps) => {
                         role="listitem"
                         className={styles["item-container"]}
                     >
-
-                        {(!id || !name) &&
+                        {(!id || !name) && (
                             <span className={styles["item"]}>error</span>
-                        }
+                        )}
 
-                        {(id && name) &&
+                        {id && name && (
                             <NavLink
-                                to={(type === "characters" ? "character/" : "book/") + id}
+                                to={
+                                    (type === "characters"
+                                        ? "character/"
+                                        : "book/") + id
+                                }
                                 className={styles["item"]}
                                 style={({ isActive }) => {
-
                                     if (isActive) {
-                                        
                                         return {
-                                            backgroundColor: "var(--app-primary-color)",
+                                            backgroundColor:
+                                                "var(--app-primary-color)",
                                             color: "var(--app-primary-color-contrast)"
                                         };
                                     }
@@ -281,7 +248,7 @@ export const List = (props: ListProps) => {
                             >
                                 {name}
                             </NavLink>
-                        }
+                        )}
                     </div>
                 );
             }}
