@@ -26,9 +26,7 @@ export const Nav = () => {
 
     // State(s)
 
-    const [searchFilter, setSearchFilter] = useState<string | undefined>(
-        undefined
-    );
+    const [searchFilterValue, setSearchFilterValue] = useState<string>("");
     const [activeSelector, setActiveSelector] = useState<
         "characters" | "books"
     >("characters");
@@ -82,16 +80,9 @@ export const Nav = () => {
                                 ? true
                                 : false
                         }
+                        value={searchFilterValue}
                         onChange={(value) => {
-                            if (value) {
-                                if (value.length >= 3) {
-                                    setSearchFilter(value);
-                                } else {
-                                    setSearchFilter(undefined);
-                                }
-                            } else {
-                                setSearchFilter(undefined);
-                            }
+                            setSearchFilterValue(value);
                         }}
                     />
                 </div>
@@ -141,7 +132,11 @@ export const Nav = () => {
                             }}
                             initialScrollTop={charactersListScrollTop}
                             onLoaded={() => setCharactersListIsLoading(false)}
-                            filter={searchFilter}
+                            filter={
+                                searchFilterValue.length >= 3
+                                    ? searchFilterValue
+                                    : undefined
+                            }
                         />
                     )}
 
@@ -156,7 +151,11 @@ export const Nav = () => {
                             }}
                             initialScrollTop={booksListScrollTop}
                             onLoaded={() => setBooksListIsLoading(false)}
-                            filter={searchFilter}
+                            filter={
+                                searchFilterValue.length >= 3
+                                    ? searchFilterValue
+                                    : undefined
+                            }
                         />
                     )}
                 </div>

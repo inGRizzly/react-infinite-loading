@@ -41,8 +41,8 @@ export interface SearchBarProps
 
     icon?: ReactElement | ReactNode | null | undefined | (() => ReactElement);
 
-    value?: string | number | undefined;
-    onChange?: (value: string | undefined | null) => void;
+    value?: string;
+    onChange?: (value: string) => void;
 }
 
 // Export - Component
@@ -57,7 +57,7 @@ export interface SearchBarProps
  * - Need to add cross to clear the input.
  * ```
  */
-export const SearchBar = (props: SearchBarProps) => {
+export const SearchBar = (props: SearchBarProps): ReactElement => {
     // Prop(s)
 
     const {
@@ -77,7 +77,7 @@ export const SearchBar = (props: SearchBarProps) => {
 
         icon = undefined,
 
-        value = undefined,
+        value = "",
         onChange = undefined,
 
         ...restInputProps
@@ -141,7 +141,7 @@ export const SearchBar = (props: SearchBarProps) => {
                 value={value}
                 onChange={(event) => {
                     if (onChange && typeof onChange === "function") {
-                        onChange(event.target.value);
+                        onChange(event.target.value || "");
                     }
                 }}
             />
