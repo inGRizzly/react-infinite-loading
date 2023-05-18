@@ -39,7 +39,7 @@ export interface SearchBarProps
     inputClassName?: string;
     inputStyle?: CSSProperties;
 
-    icon?: ReactElement | ReactNode | null | undefined | (() => ReactElement);
+    icon?: ReactNode | (() => ReactNode);
 
     value?: string;
     onChange?: (value: string) => void;

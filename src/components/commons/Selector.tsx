@@ -1,7 +1,6 @@
 // Import(s) - Interfaces / Types
 import type {
     ButtonHTMLAttributes,
-    ReactElement,
     ReactNode,
     CSSProperties
 } from "react";
@@ -12,7 +11,7 @@ import styles from "components/commons/Selector.module.css";
 // Interfaces / Types
 export interface SelectorProps
     extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children"> {
-    children: ReactElement | ReactNode | null | undefined;
+    children: ReactNode;
     containerClassName?: string;
     containerStyle?: CSSProperties;
 
